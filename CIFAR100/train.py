@@ -1,7 +1,7 @@
 import torch
 import argparse
 from tqdm import tqdm
-#from model import build_model
+from model import build_model
 from torch import nn as nn
 from dataset import dataloader
 from matplotlib import pyplot as plt
@@ -23,16 +23,17 @@ class Trainer(object):
         self.checkpoint = checkpoint
         self.lr_schedular = lr_scheduler
         self.data_size = len(dataloader)
+        self.loss_func = nn.BCELoss()
 
 
     def train(self):
-        for i in range(epoch):
+        for i in tqdm(self.epoch):
             epoch_loss = self.train_one_epoch()
             # print epoch loss
 
 
     def criterion(self, pred, target):
-        loss = loss_func(pred, target)
+        loss = self.loss_func(pred, target)
         return loss
 
 
@@ -63,5 +64,7 @@ if __name__ == '__main__':
     parser.add_argument("--batch_size", type=int, default=2)
 
     args = parser.parse_args()
+
+    model = build_model()
     
    
